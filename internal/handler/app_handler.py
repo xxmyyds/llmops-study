@@ -3,12 +3,13 @@
 # @Time    : 2026/4/11 16:33
 # @FileName: app_handler.py
 
-import os
 import uuid
 from dataclasses import dataclass
 
 from injector import inject
-from openai import OpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
 
 from internal.exception import UnauthorizedException
 from internal.schema.app_schema import CompletionReq
@@ -41,17 +42,16 @@ class AppHandler:
         req = CompletionReq()
         if not req.validate():
             return validate_error_json(req.errors)
+        # 构建组件
+        prompt = ChatPromptTemplate.from_template('{query}')
+        llm = ChatOpenAI(model='deepseek-chat')
+        parser = StrOutputParser()
 
-        client = OpenAI(base_url=os.getenv("OPENAI_BASE_URL"))
-        com = client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {'role': "system", 'content': "你是一个人民教师"},
-                {"role": "user", "content": req.query.data},
-            ]
-        )
+        # 构建链
+        chain = prompt | llm | parser
 
-        content = com.choices[0].message.content
+        # 调用链获得结果
+        content = chain.invoke({'query': req.query.data})
 
         return success_json({"content": content})
 

@@ -25,4 +25,6 @@ prompt = ChatPromptTemplate.from_template('请根据用户的提问进行回答:
 # 构建大语言模型
 llm = ChatOpenAI(model='deepseek-chat')
 joke = parser.invoke(llm.invoke(prompt.invoke({'query': '请讲一个笑话'})))
+print(type(joke))
+print(joke.get('punchline'))
 print(joke)
