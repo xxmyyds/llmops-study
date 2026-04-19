@@ -5,6 +5,7 @@
 
 import uuid
 from dataclasses import dataclass
+from uuid import UUID
 
 from injector import inject
 from langchain_core.output_parsers import StrOutputParser
@@ -38,7 +39,7 @@ class AppHandler:
         app = self.app_service.delete_app(id)
         return success_message(f"应用已被删除, id: {app.id}")
 
-    def completion(self):
+    def debug(self, app_id: UUID):
         req = CompletionReq()
         if not req.validate():
             return validate_error_json(req.errors)

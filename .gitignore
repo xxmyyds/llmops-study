@@ -1,5 +1,7 @@
 env
-.idea
+.idea/*
 .pytest_cache
 .venv
 .env
+storage/*
+tmp/*
