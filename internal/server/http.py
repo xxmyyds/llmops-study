@@ -5,6 +5,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_migrate import Migrate
 
 from config import Config
@@ -38,7 +39,15 @@ class Http(Flask):
         with self.app_context():
             _ = App()
             db.create_all()
-
+        # 解决跨域问题
+        CORS(self, resources={
+            r"/*": {
+                "origins": "*",
+                "supports_credentials": True,
+                # "methods": ["POST", "GET"],
+                # "allow_headers": ["Content_Type"],
+            }
+        })
         # 注册应用路由
         router.register_router(self)
 

@@ -19,7 +19,8 @@ class Response:
 
 
 def json(data: Response = None):
-    return jsonify(data), 200
+    response = jsonify(data)
+    return response, 200
 
 
 def success_json(data: Any = None):
