@@ -18,7 +18,7 @@ class ConversationSummaryBufferMemory:
         self.chat_histories = [] if chat_histories is None else chat_histories
         # 最大tokens
         self.max_tokens = max_tokens
-        self._client = OpenAI(base_url='https://api.deepseek.com', api_key='sk-3b71be0cd201468dbea459b14f426cbd')
+        self._client = OpenAI(base_url='https://api.deepseek.com')
 
     @classmethod
     def get_num_tokens(cls, query: str) -> int:
@@ -90,7 +90,7 @@ class ConversationSummaryBufferMemory:
         return completion.choices[0].message.content
 
 
-client = OpenAI(base_url='https://api.deepseek.com', api_key='sk-3b71be0cd201468dbea459b14f426cbd')
+client = OpenAI(base_url='https://api.deepseek.com')
 memory = ConversationSummaryBufferMemory('', [], 300)
 while True:
     # 获取人类输入
