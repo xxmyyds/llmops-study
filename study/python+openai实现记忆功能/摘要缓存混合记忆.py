@@ -80,7 +80,7 @@ class ConversationSummaryBufferMemory:
         新的对话: {new_line}
         请帮助用户将上面的信息生成新摘要.
         """
-
+        # noinspection PyTypeChecker
         completion = self._client.chat.completions.create(
             model='deepseek-chat',
             messages=[
@@ -106,6 +106,7 @@ while True:
             f"用户的提问是: {query}"
     )
     # 调用openai大模型
+    # noinspection PyTypeChecker
     response = client.chat.completions.create(
         model='deepseek-chat',
         messages=[
