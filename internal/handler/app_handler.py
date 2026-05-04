@@ -13,6 +13,7 @@ from injector import inject
 from langchain_classic.base_memory import BaseMemory
 from langchain_classic.memory import ConversationBufferWindowMemory
 from langchain_community.chat_message_histories import FileChatMessageHistory
+from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda, RunnableConfig
@@ -22,6 +23,7 @@ from langchain_openai import ChatOpenAI
 from internal.exception import UnauthorizedException
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
+from internal.service import VectorDatabaseService
 from pkg.response import success_json, validate_error_json, success_message
 
 
@@ -29,6 +31,7 @@ from pkg.response import success_json, validate_error_json, success_message
 @dataclass
 class AppHandler:
     app_service: AppService
+    vector_database_service: VectorDatabaseService
 
     def create_app(self):
         app = self.app_service.create_app()
@@ -68,7 +71,8 @@ class AppHandler:
         if not req.validate():
             return validate_error_json(req.errors)
         prompt = ChatPromptTemplate.from_messages([
-            ('system', '你是一个强大的聊天机器人, 请根据用户的问题回答'),
+            ('system',
+             '你是一个强大的聊天机器人, 请根据对应的上下文和历史对话回复用户的问题. \n\n<context>{context}</context>'),
             MessagesPlaceholder('history'),
             ('human', '{query}'),
         ])
@@ -82,14 +86,22 @@ class AppHandler:
 
         llm = ChatOpenAI(model='deepseek-chat')
 
+        retriever = self.vector_database_service.get_retriever() | self.vector_database_service.combine_documents
+
         chain = (RunnablePassthrough.assign(
             history=RunnableLambda(self._load_memory_variables) | itemgetter('history'),
+            context=itemgetter('query') | retriever
         ) | prompt | llm | StrOutputParser()).with_listeners(on_end=self._save_context)
         # 调用链获得结果
         chain_input = {'query': req.query.data}
         content = chain.invoke(chain_input, config={"configurable": {"memory": memory}})
 
         return success_json({"content": content})
+
+    @classmethod
+    def _combine_documents(cls, documents: list[Document]) -> str:
+        """将传入的文档列表合并成字符串"""
+        return "\n\n".join([document.page_content for document in documents])
 
     def ping(self):
         raise UnauthorizedException(message='未鉴权的请求')
