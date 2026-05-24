@@ -2,10 +2,6 @@
 # @Author  : xxmyyds
 # @Time    : 2026/4/18 15:50
 # @FileName: RunnablePassthrough简化invoke调用.py
-# -*- coding: utf-8 -*-
-# @Author  : xxmyyds
-# @Time    : 2026/4/18 11:32
-# @FileName: RunnableParallel模拟检索.py
 
 import dotenv
 from langchain_core.output_parsers import StrOutputParser
@@ -39,7 +35,7 @@ chain = {
 
 content = chain.invoke('你好, 我是谁')
 
-# chain = RunnablePassthrough.assign(context=lambda x: retrieval(x['query'])) | prompt | llm | parser
+# chain = RunnablePassthrough.assign(context=lambda x: retrieval(x['query'])) | base | llm | parser
 #
 # content = chain.invoke({'query': '你好, 我是谁'})
 print(content)

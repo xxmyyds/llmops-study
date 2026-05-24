@@ -44,7 +44,7 @@ class CustomDocumentLoader(BaseLoader):
                 line_number += 1
 
 
-loder = CustomDocumentLoader('./电商产品数据.txt')
+loder = CustomDocumentLoader('../../study/Document组件的使用/电商产品数据.txt')
 documents = loder.load()
 print(documents)
 print(len(documents))

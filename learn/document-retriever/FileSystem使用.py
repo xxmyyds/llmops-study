@@ -4,7 +4,7 @@
 # @FileName: FileSystem使用.py
 from langchain_community.document_loaders import FileSystemBlobLoader
 
-loader = FileSystemBlobLoader('.', show_progress=True)
+loader = FileSystemBlobLoader('../../study/Blob替代文档加载器', show_progress=True)
 
 for blob in loader.yield_blobs():
     print(blob.as_string())

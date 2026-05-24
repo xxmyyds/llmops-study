@@ -4,7 +4,7 @@
 # @FileName: Markdown加载器.py
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 
-loader = UnstructuredMarkdownLoader('项目API资料.md')
+loader = UnstructuredMarkdownLoader('../../study/Document组件的使用/项目API资料.md')
 documents = loader.load()
 print(documents)
 print(len(documents))

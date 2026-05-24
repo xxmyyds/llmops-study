@@ -5,7 +5,7 @@
 from langchain_community.document_loaders import UnstructuredFileLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
 
-loader = UnstructuredFileLoader('demo.py')
+loader = UnstructuredFileLoader('../../study/递归字符文本分割器/demo.py')
 documents = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter.from_language(

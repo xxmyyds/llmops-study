@@ -4,7 +4,7 @@
 # @FileName: TextLoader的使用.py
 from langchain_community.document_loaders import TextLoader
 
-loader = TextLoader('./电商产品数据.txt', encoding='utf-8')
+loader = TextLoader('../../study/Document组件的使用/电商产品数据.txt', encoding='utf-8')
 
 document = loader.load()
 

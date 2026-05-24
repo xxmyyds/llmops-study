@@ -66,5 +66,5 @@ embeddings = DashScopeEmbeddings(model='text-embedding-v4')
 # db.save_local('./vector_store/')
 
 
-db = FAISS.load_local('./vector_store/', embeddings, allow_dangerous_deserialization=True)
+db = FAISS.load_local('../../study/Faiss向量数据库/vector_store/', embeddings, allow_dangerous_deserialization=True)
 print(db.index_to_docstore_id)

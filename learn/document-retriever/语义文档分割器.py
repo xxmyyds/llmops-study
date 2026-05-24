@@ -8,7 +8,7 @@ from langchain_community.embeddings import DashScopeEmbeddings
 from langchain_experimental.text_splitter import SemanticChunker
 
 dotenv.load_dotenv()
-loader = UnstructuredFileLoader('科幻短篇.txt')
+loader = UnstructuredFileLoader('../../study/语义文档分割器和其他/科幻短篇.txt')
 documents = loader.load()
 
 text_splitter = SemanticChunker(

@@ -6,7 +6,7 @@ import jieba.analyse
 from langchain_community.document_loaders import UnstructuredFileLoader
 from langchain_text_splitters import TextSplitter
 
-loader = UnstructuredFileLoader('科幻短篇.txt')
+loader = UnstructuredFileLoader('../../study/自定义langchain分割器/科幻短篇.txt')
 documents = loader.load()
 
 

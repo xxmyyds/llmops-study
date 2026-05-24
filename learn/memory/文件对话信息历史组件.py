@@ -10,7 +10,7 @@ from openai import OpenAI
 dotenv.load_dotenv()
 
 client = OpenAI(base_url='https://api.deepseek.com')
-chat_history = FileChatMessageHistory('./memory.txt')
+chat_history = FileChatMessageHistory('../../study/chatMessageHistory组件上手/memory.txt')
 
 while True:
     # 获取人类输入

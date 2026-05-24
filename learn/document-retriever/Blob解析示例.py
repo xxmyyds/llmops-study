@@ -23,7 +23,7 @@ class CustomParser(BaseBlobParser):
                 line_number += 1
 
 
-blob = Blob.from_path('./xx.txt')
+blob = Blob.from_path('../../study/Blob替代文档加载器/xx.txt')
 parser = CustomParser()
 
 documents = list(parser.lazy_parse(blob))

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # @Author  : xxmyyds
 # @Time    : 2026/4/15 21:45
-# @FileName: prompt.py
+# @FileName: base.py
 from datetime import datetime
 
 from langchain_core.messages import AIMessage
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 
-# prompt = PromptTemplate.from_template('请讲一个关于{subject}的笑话')
-# print(prompt.format(subject='程序员'))
-# prompt_value = prompt.invoke({'subject': '喜剧演员'})
+# base = PromptTemplate.from_template('请讲一个关于{subject}的笑话')
+# print(base.format(subject='程序员'))
+# prompt_value = base.invoke({'subject': '喜剧演员'})
 # print(prompt_value.to_string())
 # print(prompt_value.to_messages())
 

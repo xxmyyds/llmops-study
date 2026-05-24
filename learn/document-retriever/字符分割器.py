@@ -5,7 +5,7 @@
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_text_splitters import CharacterTextSplitter
 
-loader = UnstructuredMarkdownLoader('项目API资料.md')
+loader = UnstructuredMarkdownLoader('../../study/文档转换器和字符分割器/项目API资料.md')
 documents = loader.load()
 print(documents)
 print(len(documents))

@@ -28,7 +28,7 @@ def cosine_similarity(vec1: list, vec2: list) -> float:
 embeddings = DashScopeEmbeddings(model='text-embedding-v4')
 embedding_cache = CacheBackedEmbeddings.from_bytes_store(
     embeddings,
-    LocalFileStore('./cache/'),
+    LocalFileStore('../../study/OpenAI Embedding/cache/'),
     namespace=embeddings.model,
     query_embedding_cache=True,
 )

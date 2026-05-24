@@ -5,7 +5,7 @@
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-loader = UnstructuredMarkdownLoader('项目API资料.md')
+loader = UnstructuredMarkdownLoader('../../study/递归字符文本分割器/项目API资料.md')
 documents = loader.load()
 separators = [
     "\n\n",
