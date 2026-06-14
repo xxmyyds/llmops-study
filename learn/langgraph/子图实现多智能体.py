@@ -31,8 +31,6 @@ google_serper = GoogleSerperRun(
 
 
 def reduce_str(left: str | None, right: str | None) -> str:
-    print(left)
-    print(right)
     if right is not None and right != "":
         return right
     return left
