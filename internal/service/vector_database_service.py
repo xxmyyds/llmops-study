@@ -25,16 +25,17 @@ class VectorDatabaseService:
         """构造函数，完成向量数据库服务的客户端+LangChain向量数据库实例的创建"""
         # 1.创建/连接weaviate向量数据库
         self.client = weaviate.connect_to_weaviate_cloud(
-            cluster_url='6aypz6aysys4h4jfym0lg.c0.asia-southeast1.gcp.weaviate.cloud',
+            cluster_url='owz5xuu6rckr2opo8ewwlw.c0.asia-southeast1.gcp.weaviate.cloud',
             auth_credentials=Auth.api_key(
-                'eGJBVU1CSm8rYm55cTByS18xL1JVK0xBL2Z6OUpEb0R5VEpDdmZ3R054VWd1UDR3VitZbzNzNjFWdG9ZPV92MjAw')
+                'Z0FwS0JlT0Z5VlZaaHV4OF9mNUkvd2FUU1hGNUFxQXhRdEtFZjJxR213U1FCY3Ixdm9kQkE3Qld3SFd3PV92MjAw'),
+            skip_init_checks=True
         )
 
         # 2.创建LangChain向量数据库
 
         self.vector_store = WeaviateVectorStore(
             client=self.client,
-            index_name="Dataset",
+            index_name="llmops",
             text_key="text",
             embedding=DashScopeEmbeddings(
                 model='text-embedding-v4',
