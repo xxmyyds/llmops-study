@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 @Time    : 2024/7/21 20:58
-@Author  : thezehui@gmail.com
+@Author  :
 @File    : category_entity.py
 """
 from pydantic import BaseModel, field_validator
