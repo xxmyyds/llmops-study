@@ -20,7 +20,6 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda, Runnab
 from langchain_core.tracers import Run
 from langchain_openai import ChatOpenAI
 
-from internal.core.tools.builtin_tools.providers import ProviderFactory
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
 from internal.service import VectorDatabaseService
@@ -32,7 +31,6 @@ from pkg.response import success_json, validate_error_json, success_message
 class AppHandler:
     app_service: AppService
     vector_database_service: VectorDatabaseService
-    provider_factory: ProviderFactory
 
     def create_app(self):
         app = self.app_service.create_app()
@@ -105,7 +103,4 @@ class AppHandler:
         return "\n\n".join([document.page_content for document in documents])
 
     def ping(self):
-        google_serper = self.provider_factory.get_tool('google', 'google_serper')()
-        print(google_serper)
-        print(google_serper.invoke('什么是 llmops'))
         return success_json()

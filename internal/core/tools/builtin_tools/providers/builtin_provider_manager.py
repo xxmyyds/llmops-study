@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : xxmyyds
 # @Time    : 2026/6/15 13:37
-# @FileName: provider_factory.py
+# @FileName: builtin_provider_manager.py
 import os.path
 from typing import Any
 
@@ -13,7 +13,7 @@ from internal.core.tools.builtin_tools.entities import ProviderEntity, Provider
 
 @inject
 @singleton
-class ProviderFactory:
+class BuiltinProviderManager:
     """服务提供商工厂类"""
     provider_map: dict[str, Provider] = {}
 
