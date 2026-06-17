@@ -32,9 +32,9 @@ class ApiToolProvider(db.Model):
     )
     created_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP(0)'))
 
-    @property
-    def tools(self) -> list["ApiTool"]:
-        return db.session.query(ApiTool).filter_by(provider_id=self.id).all()
+    # @property
+    # def tools(self) -> list["ApiTool"]:
+    #     return db.session.query(ApiTool).filter_by(provider_id=self.id).all()
 
 
 class ApiTool(db.Model):
@@ -60,7 +60,7 @@ class ApiTool(db.Model):
     )
     created_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP(0)'))
 
-    @property
-    def provider(self) -> "ApiToolProvider":
-        """只读属性，返回当前工具关联/归属的工具提供者信息"""
-        return db.session.query(ApiToolProvider).get(self.provider_id)
+    # @property
+    # def provider(self) -> "ApiToolProvider":
+    #     """只读属性，返回当前工具关联/归属的工具提供者信息"""
+    #     return db.session.query(ApiToolProvider).get(self.provider_id)
