@@ -4,10 +4,12 @@
 # @FileName: api_tool_service.py
 import json
 from dataclasses import dataclass
+from uuid import UUID
 
 from injector import inject
 
 from internal.core.tools.api_tools.entities import OpenAPISchema
+from internal.exception import NotFoundException
 from internal.exception import ValidateException
 from internal.model import ApiToolProvider, ApiTool
 from internal.schema.api_tool_schema import CreateApiToolReq
@@ -67,3 +69,23 @@ class ApiToolService:
             raise ValidateException('传递数据必须符合OpenAPI规范的字符串')
 
         return OpenAPISchema(**data)
+
+    def get_api_tool(self, provider_id: UUID, tool_name: str) -> ApiTool:
+        """根据传递的provider_id+tool_name获取对应工具的参数详细信息"""
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        api_tool = self.db.session.query(ApiTool).filter_by(
+            provider_id=provider_id,
+            name=tool_name
+        ).one_or_none()
+        if api_tool is None or str(api_tool.account_id) != account_id:
+            raise NotFoundException('该工具不存在')
+        return api_tool
+
+    def get_api_tool_provider(self, provider_id: UUID) -> ApiToolProvider:
+        """根据传递的provider_id获取api工具提供者信息"""
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        api_tool_provider = self.db.session.get(ApiToolProvider, provider_id)
+        if api_tool_provider is None or str(api_tool_provider.account_id) != account_id:
+            raise NotFoundException('该工具提供者不存在')
+
+        return api_tool_provider

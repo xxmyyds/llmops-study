@@ -10,7 +10,6 @@ from flask_migrate import Migrate
 
 from config import Config
 from internal.exception import CustomException
-from internal.model import App
 from internal.router import Router
 from pkg.response import json, Response, HttpCode
 from pkg.sqlalchemy import SQLAlchemy
@@ -36,9 +35,9 @@ class Http(Flask):
         # 初始化flask扩展
         db.init_app(self)
         migrate.init_app(self, db, directory='internal/migration')
-        with self.app_context():
-            _ = App()
-            db.create_all()
+        # with self.app_context():
+        #     _ = App()
+        #     db.create_all()
         # 解决跨域问题
         CORS(self, resources={
             r"/*": {
