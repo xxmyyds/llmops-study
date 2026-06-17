@@ -35,4 +35,6 @@ class BuiltinToolHandler:
 
     def get_categories(self):
         """获取所有内置提供商的分类"""
-        pass
+        categories = self.builtin_tool_service.get_categories()
+
+        return success_json(categories)
