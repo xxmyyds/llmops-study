@@ -22,13 +22,13 @@ class BuiltinProviderManager(BaseModel):
         super().__init__(**kwargs)
         self._get_provider_tool_map()
 
-    def get_provider(self, provider_name: str) -> Provider:
+    def get_provider(self, provider_name: str) -> Provider | None:
         return self.provider_map.get(provider_name)
 
     def get_providers(self) -> list[Provider]:
         return list(self.provider_map.values())
 
-    def get_provider_entities(self) -> ProviderEntity:
+    def get_provider_entities(self) -> list[ProviderEntity]:
         return [provider.provider_entity for provider in self.provider_map.values()]
 
     def get_tool(self, provider_name: str, tool_name: str) -> Any:
