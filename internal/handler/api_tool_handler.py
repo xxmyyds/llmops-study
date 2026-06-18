@@ -41,12 +41,12 @@ class ApiToolHandler:
 
         return success_message('更新自定义api插件成功')
 
-    def create_api_tool(self):
+    def create_api_tool_provider(self):
         """创建自定义api工具"""
         req = CreateApiToolReq()
         if not req.validate():
             return validate_error_json(req.errors)
-        self.api_tool_service.create_api_tool(req)
+        self.api_tool_service.create_api_tool_provider(req)
 
         return success_message('创建自定义API插件成功')
 
