@@ -41,9 +41,14 @@ class Router:
         # 自定义插件模块
         bp.add_url_rule('/api-tools/validate-openapi-schema', view_func=self.api_tool_handler.validate_openapi_schema,
                         methods=['POST'])
+        bp.add_url_rule('/api-tools/', view_func=self.api_tool_handler.get_api_tool_providers_with_page)
         bp.add_url_rule('/api-tools', view_func=self.api_tool_handler.create_api_tool, methods=['POST'])
         bp.add_url_rule('/api-tools/<uuid:provider_id>', view_func=self.api_tool_handler.get_api_tool_provider)
         bp.add_url_rule('/api-tools/<uuid:provider_id>/tools/<string:tool_name>',
                         view_func=self.api_tool_handler.get_api_tool)
+
+        bp.add_url_rule('/api-tools/<uuid:provider_id>/delete', methods=['POST'],
+                        view_func=self.api_tool_handler.delete_api_tool_provider)
+
         # 在应用上注册蓝图
         app.register_blueprint(bp)

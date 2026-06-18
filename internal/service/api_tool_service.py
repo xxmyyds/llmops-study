@@ -4,16 +4,20 @@
 # @FileName: api_tool_service.py
 import json
 from dataclasses import dataclass
+from typing import Any
 from uuid import UUID
 
 from injector import inject
+from sqlalchemy import desc
 
 from internal.core.tools.api_tools.entities import OpenAPISchema
 from internal.exception import NotFoundException
 from internal.exception import ValidateException
 from internal.model import ApiToolProvider, ApiTool
 from internal.schema.api_tool_schema import CreateApiToolReq
-from pkg.sqlalchemy import SQLAlchemy
+from paginator import Paginator
+from pkg.sqlpkg import SQLAlchemy
+from schema.api_tool_schema import GetApiToolProvidersWithPageReq
 
 
 @inject
@@ -89,3 +93,30 @@ class ApiToolService:
             raise NotFoundException('该工具提供者不存在')
 
         return api_tool_provider
+
+    def delete_api_tool_provider(self, provider_id: UUID) -> None:
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        api_tool_provider = self.db.session.get(ApiToolProvider, provider_id)
+        if api_tool_provider is None or str(api_tool_provider.account_id) != account_id:
+            raise NotFoundException('该工具提供者不存在')
+
+        with self.db.auto_commit():
+            self.db.session.query(ApiTool).filter(
+                ApiTool.provider_id == provider_id,
+                ApiTool.account_id == account_id
+            ).delete()
+
+            self.db.session.delete(api_tool_provider)
+
+    def get_api_tool_providers_with_page(self, req: GetApiToolProvidersWithPageReq) -> tuple[list[Any], Paginator]:
+        """获取自定义api工具服务提供者分页列表数据"""
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        paginator = Paginator(db=self.db, req=req)
+        filters = [ApiToolProvider.account_id == account_id]
+        if req.search_word.data:
+            filters.append(ApiToolProvider.name.ilike(f"%{req.search_word.data}%"))
+        api_tool_providers = paginator.paginate(
+            self.db.session.query(ApiToolProvider).filter(*filters).order_by(desc('created_at')),
+        )
+
+        return api_tool_providers, paginator

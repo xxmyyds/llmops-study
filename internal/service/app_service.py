@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from injector import inject
 
 from internal.model import App
-from pkg.sqlalchemy import SQLAlchemy
+from pkg.sqlpkg import SQLAlchemy
 
 
 @inject

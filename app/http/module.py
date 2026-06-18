@@ -7,7 +7,7 @@ from injector import Module, Binder
 
 from internal.extension.database_extension import db
 from internal.extension.migrate_extension import migrate
-from pkg.sqlalchemy import SQLAlchemy
+from pkg.sqlpkg import SQLAlchemy
 
 
 class ExtensionModule(Module):

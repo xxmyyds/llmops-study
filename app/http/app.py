@@ -10,7 +10,7 @@ from config import Config
 from internal.router import Router
 from internal.server import Http
 from module import ExtensionModule
-from pkg.sqlalchemy import SQLAlchemy
+from pkg.sqlpkg import SQLAlchemy
 
 # 将env加载到环境变量中
 dotenv.load_dotenv()

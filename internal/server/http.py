@@ -12,7 +12,7 @@ from config import Config
 from internal.exception import CustomException
 from internal.router import Router
 from pkg.response import json, Response, HttpCode
-from pkg.sqlalchemy import SQLAlchemy
+from pkg.sqlpkg import SQLAlchemy
 
 
 class Http(Flask):
