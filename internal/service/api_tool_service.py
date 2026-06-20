@@ -54,7 +54,7 @@ class ApiToolService(BaseService):
             name=req.name.data,
             icon=req.icon.data,
             headers=req.headers.data,
-            openapi_schema=openapi_schema.data,
+            openapi_schema=req.openapi_schema.data
         )
 
         for path, path_item in openapi_schema.paths.items():
