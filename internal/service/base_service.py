@@ -4,8 +4,8 @@
 # @FileName: base_service.py
 from typing import Any, Optional
 
-from exception import FailException
-from sqlpkg import SQLAlchemy
+from internal.exception import FailException
+from pkg.sqlpkg import SQLAlchemy
 
 
 class BaseService:

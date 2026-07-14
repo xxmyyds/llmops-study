@@ -15,7 +15,7 @@ from internal.exception import NotFoundException
 from internal.exception import ValidateException
 from internal.model import ApiToolProvider, ApiTool
 from internal.schema.api_tool_schema import CreateApiToolReq, GetApiToolProvidersWithPageReq, UpdateApiToolProvidersResp
-from paginator import Paginator
+from pkg.paginator import Paginator
 from pkg.sqlpkg import SQLAlchemy
 from .base_service import BaseService
 

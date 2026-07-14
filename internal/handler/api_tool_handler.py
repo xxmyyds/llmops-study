@@ -10,10 +10,10 @@ from injector import inject
 
 from internal.schema.api_tool_schema import GetApiToolProviderResp, GetApiToolResp, GetApiToolProvidersWithPageReq, \
     ValidateOpenApiSchemaReq, CreateApiToolReq
+from internal.schema.api_tool_schema import GetApiToolProvidersWithPageResp, UpdateApiToolProvidersResp
 from internal.service import ApiToolService
-from paginator import PageModel
+from pkg.paginator import PageModel
 from pkg.response import validate_error_json, success_json, success_message
-from schema.api_tool_schema import GetApiToolProvidersWithPageResp, UpdateApiToolProvidersResp
 
 
 @inject
