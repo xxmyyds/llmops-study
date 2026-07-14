@@ -2,6 +2,7 @@
 # @Author  : xxmyyds
 # @Time    : 2026/4/11 16:58
 # @FileName: http.py
+import logging
 import os
 
 from flask import Flask
@@ -10,6 +11,7 @@ from flask_migrate import Migrate
 
 from config import Config
 from internal.exception import CustomException
+from internal.extension import logging_extension
 from internal.router import Router
 from pkg.response import json, Response, HttpCode
 from pkg.sqlpkg import SQLAlchemy
@@ -35,6 +37,7 @@ class Http(Flask):
         # 初始化flask扩展
         db.init_app(self)
         migrate.init_app(self, db, directory='internal/migration')
+        logging_extension.init_app(self)
         # with self.app_context():
         #     _ = App()
         #     db.create_all()
@@ -51,6 +54,7 @@ class Http(Flask):
         router.register_router(self)
 
     def _register_error_handler(self, error: Exception):
+        logging.error("An error occured: %s", error, exc_info=True)
         # 判断是否是自定义异常
         if isinstance(error, CustomException):
             return json(Response(
