@@ -23,6 +23,7 @@ from langchain_openai import ChatOpenAI
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
 from internal.service import VectorDatabaseService
+from internal.task.demo_task import demo_task
 from pkg.response import success_json, validate_error_json, success_message
 
 
@@ -103,4 +104,5 @@ class AppHandler:
         return "\n\n".join([document.page_content for document in documents])
 
     def ping(self):
+        demo_task.delay(uuid.uuid4())
         return success_json()
