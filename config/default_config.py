@@ -10,4 +10,11 @@ DEFAULT_CONFIG = {
     'SQLALCHEMY_ECHO': 'True',
     # wft配置
     'WTF_CSRF_ENABLED': 'False',
+    # redis配置
+    'REDIS_HOST': 'localhost',
+    'REDIS_PORT': '6379',
+    'REDIS_USERNAME': '',
+    'REDIS_PASSWORD': '',
+    'REDIS_DB': '0',
+    'REDIS_USE_SSL': 'False',
 }
