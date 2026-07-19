@@ -8,6 +8,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired, Length, URL, Optional
 
 from internal.model.dataset import Dataset
+from pkg.paginator import PaginatorReq
 
 
 class CreateDatasetReq(FlaskForm):
@@ -69,3 +70,37 @@ class UpdateDatasetReq(FlaskForm):
         Optional(),
         Length(max=2000, message='知识库描述长度不能超过2000字符')
     ])
+
+
+class GetDatasetsWithPageReq(PaginatorReq):
+    """获取知识库分页列表请求数据"""
+    search_word = StringField('search_word', validators=[
+        Optional(),
+    ])
+
+
+class GetDatasetsWithPageResp(Schema):
+    """获取知识库分页列表响应数据"""
+    id = fields.UUID(dump_default='')
+    name = fields.String(dump_default='')
+    icon = fields.String(dump_default='')
+    description = fields.String(dump_default='')
+    document_count = fields.Integer(dump_default=0)
+    related_app_count = fields.Integer(dump_default=0)
+    charactor_count = fields.Integer(dump_default=0)
+    updated_at = fields.Integer(dump_default=0)
+    created_at = fields.Integer(dump_default=0)
+
+    @pre_dump
+    def process_data(self, data: Dataset, **kwargs):
+        return {
+            'id': data.id,
+            'name': data.name,
+            'icon': data.icon,
+            'description': data.description,
+            'document_count': data.document_count,
+            'charactor_count': data.charactor_count,
+            'related_app_count': data.related_app_count,
+            'updated_at': int(data.updated_at.timestamp()),
+            'created_at': int(data.created_at.timestamp()),
+        }

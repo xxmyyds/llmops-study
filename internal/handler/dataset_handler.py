@@ -5,10 +5,13 @@
 from dataclasses import dataclass
 from uuid import UUID
 
+from flask import request
 from injector import inject
 
-from internal.schema.dataset_schema import CreateDatasetReq, GetDatasetResp, UpdateDatasetReq
+from internal.schema.dataset_schema import CreateDatasetReq, GetDatasetResp, UpdateDatasetReq, GetDatasetsWithPageReq, \
+    GetDatasetsWithPageResp
 from internal.service import DatasetService
+from paginator import PageModel
 from pkg.response import validate_error_json, success_message, success_json
 
 
@@ -46,4 +49,11 @@ class DatasetHandler:
 
     def get_datasets_with_page(self):
         """获取知识库分页+搜索列表数据"""
-        pass
+        req = GetDatasetsWithPageReq(request.args)
+        if not req.validate():
+            return validate_error_json(req.errors)
+
+        datasets, paginator = self.dataset_service.get_datasets_with_page(req)
+
+        resp = GetDatasetsWithPageResp(many=True)
+        return success_json(PageModel(list=resp.dump(datasets), paginator=paginator))

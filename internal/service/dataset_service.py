@@ -6,12 +6,14 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from injector import inject
+from sqlalchemy import desc
 
 from internal.entity.dataset_entity import DEFAULT_DATASET_DESCRIPTION_FORMATTER
 from internal.exception import ValidateException, NotFoundException
 from internal.model import Dataset
-from internal.schema.dataset_schema import CreateDatasetReq, UpdateDatasetReq
+from internal.schema.dataset_schema import CreateDatasetReq, UpdateDatasetReq, GetDatasetsWithPageReq
 from internal.service import BaseService
+from pkg.paginator import Paginator
 from pkg.sqlpkg import SQLAlchemy
 
 
@@ -74,3 +76,18 @@ class DatasetService(BaseService):
             description=req.description.data,
         )
         return dataset
+
+    def get_datasets_with_page(self, req: GetDatasetsWithPageReq) -> tuple[list[Dataset], Paginator]:
+        """根据传递的数据获取知识库列表分页数据"""
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        paginator = Paginator(db=self.db, req=req)
+
+        filters = [Dataset.account_id == account_id]
+        if req.search_word.data:
+            filters.append(Dataset.name.ilike(f"%{req.search_word.data}%"))
+
+        datasets = paginator.paginate(
+            self.db.session.query(Dataset).filter(*filters).order_by(desc('created_at'))
+        )
+
+        return datasets, paginator
