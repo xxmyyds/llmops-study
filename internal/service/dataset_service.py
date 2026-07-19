@@ -10,7 +10,7 @@ from injector import inject
 from internal.entity.dataset_entity import DEFAULT_DATASET_DESCRIPTION_FORMATTER
 from internal.exception import ValidateException, NotFoundException
 from internal.model import Dataset
-from internal.schema.dataset_schema import CreateDatasetReq
+from internal.schema.dataset_schema import CreateDatasetReq, UpdateDatasetReq
 from internal.service import BaseService
 from pkg.sqlpkg import SQLAlchemy
 
@@ -47,4 +47,30 @@ class DatasetService(BaseService):
         dataset = self.get(Dataset, dataset_id)
         if dataset is None or str(dataset.account_id) != account_id:
             raise NotFoundException('该知识库不存在')
+        return dataset
+
+    def update_dataset(self, dataset_id: UUID, req: UpdateDatasetReq) -> Dataset:
+        """根据传递的知识库id更新知识库"""
+        account_id = "46db30d1-3199-4e79-a0cd-abf12fa6858f"
+        dataset = self.get(Dataset, dataset_id)
+        if dataset is None or str(dataset.account_id) != account_id:
+            raise NotFoundException('该知识库不存在')
+
+        check_dataset = self.db.session.query(Dataset).filter(
+            Dataset.account_id == account_id,
+            Dataset.name == req.name.data,
+            Dataset.id != dataset_id,
+        ).one_or_none()
+        if check_dataset:
+            raise ValidateException(f'该知识库名称{req.name.data}已存在，请修改')
+
+        if req.description.data is None or req.description.data.strip() == "":
+            req.description.data = DEFAULT_DATASET_DESCRIPTION_FORMATTER.format(name=req.name.data)
+
+        self.update(
+            dataset,
+            name=req.name.data,
+            icon=req.icon.data,
+            description=req.description.data,
+        )
         return dataset
