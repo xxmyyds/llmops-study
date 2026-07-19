@@ -72,7 +72,7 @@ class Dataset(db.Model):
         )
 
     @property
-    def character_count(self) -> int:
+    def charactor_count(self) -> int:
         """只读属性，获取该知识库下的字符总数"""
         return (
             db.session.
