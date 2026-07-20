@@ -10,7 +10,7 @@ from injector import inject
 
 from internal.schema.dataset_schema import CreateDatasetReq, GetDatasetResp, UpdateDatasetReq, GetDatasetsWithPageReq, \
     GetDatasetsWithPageResp
-from internal.service import DatasetService
+from internal.service import DatasetService, EmbeddingsService
 from paginator import PageModel
 from pkg.response import validate_error_json, success_message, success_json
 
@@ -20,6 +20,12 @@ from pkg.response import validate_error_json, success_message, success_json
 class DatasetHandler:
     """知识库处理器"""
     dataset_service: DatasetService
+    embeddings_service: EmbeddingsService
+
+    def embeddings_query(self):
+        query = request.args.get('query')
+        vectors = self.embeddings_service.embeddings.embed_query(query)
+        return success_json({'vectors': vectors})
 
     def create_dataset(self):
         """创建知识库"""

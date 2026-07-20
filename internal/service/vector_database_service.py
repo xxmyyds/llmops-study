@@ -7,12 +7,12 @@ import os
 
 import weaviate
 from injector import inject
-from langchain_community.embeddings import DashScopeEmbeddings
 from langchain_core.documents import Document
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_weaviate import WeaviateVectorStore
 from weaviate import WeaviateClient
-from weaviate.classes.init import Auth
+
+from .embeddings_service import EmbeddingsService
 
 
 @inject
@@ -20,27 +20,23 @@ class VectorDatabaseService:
     """向量数据库服务"""
     client: WeaviateClient
     vector_store: WeaviateVectorStore
+    embeddings_service: EmbeddingsService
 
-    def __init__(self):
+    def __init__(self, embeddings_service: EmbeddingsService):
         """构造函数，完成向量数据库服务的客户端+LangChain向量数据库实例的创建"""
+        self.embeddings_service = embeddings_service
         # 1.创建/连接weaviate向量数据库
-        self.client = weaviate.connect_to_weaviate_cloud(
-            cluster_url='owz5xuu6rckr2opo8ewwlw.c0.asia-southeast1.gcp.weaviate.cloud',
-            auth_credentials=Auth.api_key(
-                'Z0FwS0JlT0Z5VlZaaHV4OF9mNUkvd2FUU1hGNUFxQXhRdEtFZjJxR213U1FCY3Ixdm9kQkE3Qld3SFd3PV92MjAw'),
-            skip_init_checks=True
+        self.client = weaviate.connect_to_local(
+            host=os.getenv('WEAVIATE_HOST', 'localhost'),
+            port=int(os.getenv('WEAVIATE_PORT', '8080')),
         )
 
         # 2.创建LangChain向量数据库
-
         self.vector_store = WeaviateVectorStore(
             client=self.client,
             index_name="llmops",
             text_key="text",
-            embedding=DashScopeEmbeddings(
-                model='text-embedding-v4',
-                dashscope_api_key=os.environ['DASHSCOPE_API_KEY'],
-            )
+            embedding=self.embeddings_service.embeddings,
         )
 
     def get_retriever(self) -> VectorStoreRetriever:
