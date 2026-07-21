@@ -8,11 +8,14 @@ from uuid import UUID
 from flask import request
 from injector import inject
 
+from internal.core.file_extractor import FileExtractor
+from internal.model import UploadFile
 from internal.schema.dataset_schema import CreateDatasetReq, GetDatasetResp, UpdateDatasetReq, GetDatasetsWithPageReq, \
     GetDatasetsWithPageResp
 from internal.service import DatasetService, EmbeddingsService, JiebaService
 from paginator import PageModel
 from pkg.response import validate_error_json, success_message, success_json
+from pkg.sqlpkg import SQLAlchemy
 
 
 @inject
@@ -22,12 +25,17 @@ class DatasetHandler:
     dataset_service: DatasetService
     embeddings_service: EmbeddingsService
     jieba_service: JiebaService
+    file_extractor: FileExtractor
+    db: SQLAlchemy
 
     def embeddings_query(self):
-        query = request.args.get('query')
+        upload_file = self.db.session.query(UploadFile).get('b7921188-9734-485e-9e8f-00c06a4636e3')
+        content = self.file_extractor.load(upload_file, True)
+        return success_json({'content': content})
+        # query = request.args.get('query')
         # vectors = self.embeddings_service.embeddings.embed_query(query)
-        keywords = self.jieba_service.extract_keywords(query)
-        return success_json({'keywords': keywords})
+        # keywords = self.jieba_service.extract_keywords(query)
+        # return success_json({'keywords': keywords})
 
     def create_dataset(self):
         """创建知识库"""
